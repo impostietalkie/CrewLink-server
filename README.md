@@ -2,18 +2,18 @@
 
 <br />
 <p align="center">
-  <a href="https://github.com/ottomated/crewlink-server">
+  <a href="https://github.com/impostietalkie/crewlink-server">
     <img src="logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">CrewLink Server</h3>
 
   <p align="center">
-    Voice Relay server for <a href="https://github.com/ottomated/crewlink">CrewLink</a>.
+    Voice Relay server for <a href="https://github.com/impostietalkie/crewlink">CrewLink</a>.
     <br />
-    <a href="https://github.com/ottomated/crewlink-server/issues">Report Bug</a>
+    <a href="https://github.com/impostietalkie/crewlink-server/issues">Report Bug</a>
     ·
-    <a href="https://github.com/ottomated/crewlink-server/issues">Request Feature</a>
+    <a href="https://github.com/impostietalkie/crewlink-server/issues">Request Feature</a>
   </p>
 </p>
 
@@ -36,7 +36,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This is the relay server for CrewLink, an Among Us proximity voice chat program. I am currently hosting a server at `https://crewl.ink/`, but if you want a more reliable option I would suggest to deploy this repository yourself.
+This is the relay server for CrewLink, an Among Us proximity voice chat program.
 
 ## Environment Variables
 
@@ -54,7 +54,7 @@ To get up and running quickly, you can deploy to Heroku using the button below
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-This will deploy an instance of the crewlink-server. You can get the URL of your server by using the app name that you gave when you launched the app on heroku and appending `.herokuapp.com`. You can also find the URL of your server by going to "Settings", scrolling down to "Domains", and removing the `https://` and trailing slash from the url. Using this URL, follow step 4 of the [installation instructions](https://github.com/ottomated/CrewLink-server#manual-installation) to connect your client to your server instance.
+This will deploy an instance of the crewlink-server. You can get the URL of your server by using the app name that you gave when you launched the app on heroku and appending `.herokuapp.com`. You can also find the URL of your server by going to "Settings", scrolling down to "Domains", and removing the `https://` and trailing slash from the url. Using this URL, follow step 4 of the [installation instructions](https://github.com/impostietalkie/CrewLink-server#manual-installation) to connect your client to your server instance.
 
 ## Docker Quickstart
 
@@ -76,13 +76,13 @@ To build your own Docker image, do the following:
 
 1. Clone the repo
 ```sh
-git clone https://github.com/ottomated/crewlink-server.git
+git clone https://github.com/impostietalkie/crewlink-server.git
 cd crewlink-server
 ```
 
 2. Run the Docker build command:
 ```sh
-docker build -t ottomated/crewlink-server:build .
+docker build -t impostietalkie/crewlink-server:build .
 ```
 
 ## Manual Installation
@@ -100,7 +100,7 @@ npm install yarn -g
 
 1. Clone the repo
 ```sh
-git clone https://github.com/ottomated/crewlink-server.git
+git clone https://github.com/impostietalkie/crewlink-server.git
 cd crewlink-server
 ```
 2. Install NPM packages
@@ -130,7 +130,5 @@ Any contributions you make are greatly appreciated.
 Distributed under the GNU General Public License v3.0. See `LICENSE` for more information.
 
 
-[license-shield]: https://img.shields.io/github/license/ottomated/crewlink.svg?style=flat-square
-[license-url]: https://github.com/ottomated/crewlink-server/blob/master/LICENSE
-[docker-shield]: https://img.shields.io/docker/pulls/ottomated/crewlink-server
-[docker-url]: https://hub.docker.com/repository/docker/ottomated/crewlink-server
+[license-shield]: https://img.shields.io/github/license/impostietalkie/crewlink.svg?style=flat-square
+[license-url]: https://github.com/impostietalkie/crewlink-server/blob/master/LICENSE
