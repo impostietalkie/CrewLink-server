@@ -200,10 +200,19 @@ io.on('connection', (socket: socketIO.Socket) => {
 		logger.info(`Socket %s (id=%d) sent state:`, socket.id, id);
 		logger.info(`Current state: %s`, state);
 		const gameState = JSON.parse(state) as AmongUsState;
-		const code = JSON.parse(state).lobbyCode;
-		states.set(code, gameState);
+		const code = gameState.lobbyCode;
+		const nonLocalGameState = {
+			...gameState,
+			players: gameState.players.map((player) => {
+				return {
+					...player,
+					isLocal: false,
+				}
+			})
+		}
+		states.set(code, nonLocalGameState);
 
-		socket.to(code).broadcast.emit('pullstate', state);
+		socket.to(code).broadcast.emit('pullstate', nonLocalGameState);
 	})
 
 	socket.on('leave', () => {
