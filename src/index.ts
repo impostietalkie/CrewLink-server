@@ -69,7 +69,6 @@ app.get('/health', (req, res) => {
 app.get('/hasRoomCode', (req, res) => {
 	res.json({
 		isValid: req.query.roomCode ? states.has(req.query.roomCode.toString()) : false,
-		states: states,
 	})
 })
 
