@@ -46,7 +46,7 @@ app.set('view engine', 'pug')
 app.use(morgan('combined'))
 
 let connectionCount = 0;
-let address = process.env.ADDRESS;
+let address = '127.0.0.1';
 if (!address) {
 	logger.error('You must set the ADDRESS environment variable.');
 	process.exit(1);
@@ -83,6 +83,54 @@ io.use((socket, next) => {
 	}
 });
 
+// GAME STATE
+export interface AmongUsState {
+	gameState: GameState;
+	oldGameState: GameState;
+	lobbyCode: string;
+	players: Player[];
+	isHost: boolean;
+	clientId: number;
+	hostId: number;
+	commsSabotaged: boolean;
+}
+
+export interface Player {
+	ptr: number;
+	id: number;
+	clientId: number;
+	name: string;
+	colorId: number;
+	hatId: number;
+	petId: number;
+	skinId: number;
+	disconnected: boolean;
+	isImpostor: boolean;
+	isDead: boolean;
+	taskPtr: number;
+	objectPtr: number;
+	isLocal: boolean;
+
+	x: number;
+	y: number;
+	inVent: boolean;
+}
+
+export enum MapType {
+	THE_SKELD,
+	MIRA_HQ,
+	POLUS,
+	UNKNOWN,
+}
+
+export enum GameState {
+	LOBBY,
+	TASKS,
+	DISCUSSION,
+	MENU,
+	UNKNOWN,
+}
+
 io.on('connection', (socket: socketIO.Socket) => {
 	connectionCount++;
 	logger.info("Total connected: %d", connectionCount);
@@ -95,13 +143,15 @@ io.on('connection', (socket: socketIO.Socket) => {
 			return;
 		}
 
+		logger.info(`Socket %s joined server with c:%s id:%d clientId:%d`, socket.id, c, id, clientId);
+
 		let otherClients: any = {};
 		if (io.sockets.adapter.rooms[c]) {
 			let socketsInLobby = Object.keys(io.sockets.adapter.rooms[c].sockets);
 			for (let s of socketsInLobby) {
 				if (clients.has(s) && clients.get(s).clientId === clientId) {
 					socket.disconnect();
-					logger.error(`Socket %s sent invalid join command, attempted spoofing another client`);
+					logger.error(`Socket %s sent invalid join command, attempted spoofing another client`, socket.id);
 					return;
 				}
 				if (s !== socket.id)
@@ -123,6 +173,9 @@ io.on('connection', (socket: socketIO.Socket) => {
 			logger.error(`Socket %s sent invalid id command: %d %d`, socket.id, id, clientId);
 			return;
 		}
+
+		logger.info(`Socket %s ided server with id:%d clientId:%d`, socket.id, id, clientId);
+
 		let client = clients.get(socket.id);
 		if (client != null && client.clientId != null && client.clientId !== clientId) {
 			socket.disconnect();
@@ -137,12 +190,18 @@ io.on('connection', (socket: socketIO.Socket) => {
 		socket.to(code).broadcast.emit('setClient', socket.id, client);
 	})
 
+	socket.on('pushstate', (id: number, state: string) => {
+		logger.info(`Socket %s (id=%d) sent state:`, socket.id, id);
+		logger.info(`%s`, state);
+	})
 
 	socket.on('leave', () => {
 		if (code) {
 			socket.leave(code);
 			clients.delete(socket.id);
 		}
+
+		logger.info(`Socket %s left server`, socket.id);
 	})
 
 	socket.on('signal', (signal: Signal) => {
@@ -156,6 +215,8 @@ io.on('connection', (socket: socketIO.Socket) => {
 			data,
 			from: socket.id
 		});
+
+		logger.info(`Socket %s signaled server to %s`, socket.id, signal.to);
 	});
 
 	socket.on('disconnect', () => {
