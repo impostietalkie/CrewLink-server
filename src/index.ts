@@ -199,7 +199,10 @@ io.on('connection', (socket: socketIO.Socket) => {
 		logger.info(`Socket %s (id=%d) sent state:`, socket.id, id);
 		logger.info(`Current state: %s`, state);
 		const gameState = JSON.parse(state) as AmongUsState;
-		states.set(gameState.lobbyCode, gameState);
+		const code = JSON.parse(state).lobbyCode;
+		states.set(code, gameState);
+
+		socket.to(code).broadcast.emit('pullstate', state);
 	})
 
 	socket.on('leave', () => {
