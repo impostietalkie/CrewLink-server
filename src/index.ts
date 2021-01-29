@@ -66,21 +66,7 @@ app.get('/health', (req, res) => {
 })
 
 io.use((socket, next) => {
-	const userAgent = socket.request.headers['user-agent'];
-	const matches = /^CrewLink\/(\d+\.\d+\.\d+) \((\w+)\)$/.exec(userAgent);
-	const error = new Error() as any;
-	error.data = { message: 'The voice server does not support your version of CrewLink.\nSupported versions: ' + Array.from(supportedCrewLinkVersions).join() };
-	if (!matches) {
-		next(error);
-	} else {
-		const version = matches[1];
-		// const platform = matches[2];
-		if (supportedCrewLinkVersions.has(version)) {
-			next();
-		} else {
-			next(error);
-		}
-	}
+	next();
 });
 
 // GAME STATE
