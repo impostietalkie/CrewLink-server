@@ -98,6 +98,7 @@ export interface AmongUsState {
 	clientId: number;
 	hostId: number;
 	commsSabotaged: boolean;
+	map: MapType;
 }
 
 export interface Player {
