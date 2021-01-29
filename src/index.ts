@@ -31,6 +31,7 @@ if (httpsEnabled) {
 const io = socketIO(server);
 
 const clients = new Map<string, Client>();
+const states = new Map<string, AmongUsState>();
 
 interface Client {
 	playerId: number;
@@ -63,6 +64,12 @@ app.get('/health', (req, res) => {
 		address,
 		name: process.env.NAME
 	});
+})
+
+app.get('/hasRoomCode', (req, res) => {
+	res.json({
+		isValid: states.has(req.query.roomCode.toString())
+	})
 })
 
 io.use((socket, next) => {
@@ -117,7 +124,6 @@ export enum GameState {
 	UNKNOWN,
 }
 
-const states = new Map<string, AmongUsState>();
 io.on('connection', (socket: socketIO.Socket) => {
 	connectionCount++;
 	logger.info("Total connected: %d", connectionCount);
