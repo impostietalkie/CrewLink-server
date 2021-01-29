@@ -117,6 +117,7 @@ export enum GameState {
 	UNKNOWN,
 }
 
+const states = new Map<string, AmongUsState>();
 io.on('connection', (socket: socketIO.Socket) => {
 	connectionCount++;
 	logger.info("Total connected: %d", connectionCount);
@@ -178,7 +179,9 @@ io.on('connection', (socket: socketIO.Socket) => {
 
 	socket.on('pushstate', (id: number, state: string) => {
 		logger.info(`Socket %s (id=%d) sent state:`, socket.id, id);
-		logger.info(`%s`, state);
+		logger.info(`Current state: %s`, state);
+		const gameState = JSON.parse(state) as AmongUsState;
+		states.set(gameState.lobbyCode, gameState);
 	})
 
 	socket.on('leave', () => {
