@@ -46,7 +46,7 @@ app.set('view engine', 'pug')
 app.use(morgan('combined'))
 
 let connectionCount = 0;
-let address = '127.0.0.1';
+let address = process.env.ADDRESS || '127.0.0.1';
 if (!address) {
 	logger.error('You must set the ADDRESS environment variable.');
 	process.exit(1);
