@@ -46,6 +46,12 @@ interface Signal {
 app.set('view engine', 'pug')
 app.use(morgan('combined'))
 
+app.use((req, res, next) => {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
+})
+
 let connectionCount = 0;
 let address = process.env.ADDRESS || '127.0.0.1';
 if (!address) {
