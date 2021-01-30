@@ -208,7 +208,8 @@ io.on('connection', (socket: socketIO.Socket) => {
 					...player,
 					isLocal: false,
 				}
-			})
+			}),
+			isHost: false,
 		}
 		states.set(code, nonLocalGameState);
 
