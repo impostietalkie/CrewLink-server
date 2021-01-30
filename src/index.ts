@@ -32,7 +32,7 @@ const io = socketIO(server);
 
 const clients = new Map<string, Client>();
 const states = new Map<string, AmongUsState>();
-const selectedPlayerNamesByRoomCode = new Map<string, string[]>();
+let selectedPlayerNamesByRoomCode = new Map<string, string[]>();
 
 interface Client {
 	playerId: number;
@@ -91,6 +91,7 @@ app.get('/availablePlayers', (req, res) => {
 	const selectedPlayerNames = roomCode ? selectedPlayerNamesByRoomCode.get(roomCode) ?? [] : [];
 	res.json({
 		players: players.filter((player) => !selectedPlayerNames.includes(player.name)),
+		selectedPlayerNames: selectedPlayerNames,
 	})
 })
 
@@ -99,9 +100,10 @@ app.put('/selectedPlayer', (req, res) => {
 	const playerName = req.query.playerName.toString();
 	const playerNames = selectedPlayerNamesByRoomCode.get(roomCode) ?? [];
 	playerNames.push(playerName)
-	selectedPlayerNamesByRoomCode.set(roomCode, playerNames)
+	selectedPlayerNamesByRoomCode = selectedPlayerNamesByRoomCode.set(roomCode, playerNames)
 	res.json({
 		complete: true,
+		selectedPlayerNamesByRoomCode: selectedPlayerNamesByRoomCode,
 	})
 })
 
@@ -109,9 +111,10 @@ app.delete('/selectedPlayer', (req, res) => {
 	const roomCode = req.query.roomCode.toString();
 	const playerName = req.query.playerName.toString();
 	const playerNames = selectedPlayerNamesByRoomCode.get(roomCode) ?? [];
-	selectedPlayerNamesByRoomCode.set(roomCode, playerNames.filter((player) => player !== playerName))
+	selectedPlayerNamesByRoomCode = selectedPlayerNamesByRoomCode.set(roomCode, playerNames.filter((player) => player !== playerName))
 	res.json({
 		complete: true,
+		selectedPlayerNamesByRoomCode: selectedPlayerNamesByRoomCode,
 	})
 })
 
