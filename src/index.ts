@@ -92,7 +92,6 @@ app.get('/availablePlayers', (req, res) => {
 	const selectedPlayerNames = roomCode ? selectedPlayerNamesByRoomCode.get(roomCode) ?? [] : [];
 	res.json({
 		players: players.filter((player) => !selectedPlayerNames.includes(player.name)),
-		selectedPlayerNames: selectedPlayerNames,
 	})
 })
 
@@ -104,7 +103,6 @@ app.put('/selectedPlayer', (req, res) => {
 	selectedPlayerNamesByRoomCode = selectedPlayerNamesByRoomCode.set(roomCode, playerNames)
 	res.json({
 		complete: true,
-		selectedPlayerNamesByRoomCode: selectedPlayerNamesByRoomCode,
 	})
 })
 
@@ -115,7 +113,6 @@ app.delete('/selectedPlayer', (req, res) => {
 	selectedPlayerNamesByRoomCode = selectedPlayerNamesByRoomCode.set(roomCode, playerNames.filter((player) => player !== playerName))
 	res.json({
 		complete: true,
-		selectedPlayerNamesByRoomCode: selectedPlayerNamesByRoomCode,
 	})
 })
 
